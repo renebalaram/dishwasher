@@ -29,10 +29,13 @@ class DishwasherCollectionViewCell: UICollectionViewCell {
         titleLabel.text = dishwasher.title
         priceLabel.text = "00.00"
         
-        if let url = URL(string: "https:\(dishwasher.image)") {
-//            imageView.contentMode = .scaleAspectFit
-            downloadImage(url: url, imageViewCell: imageView)
+        if imageView.image == nil{
+        
+            if let url = URL(string: "https:\(dishwasher.image)") {
+                downloadImage(url: url, imageViewCell: imageView)
+            }
         }
+        
     }
     
     func getDataFromUrl(url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
