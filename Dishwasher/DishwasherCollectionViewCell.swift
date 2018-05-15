@@ -15,7 +15,7 @@ class DishwasherCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var priceLabel: UILabel!
     
     static let identifier = "DishwasherCell"
-    
+    var dataTask : URLSessionDataTask?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -27,24 +27,24 @@ class DishwasherCollectionViewCell: UICollectionViewCell {
     func configure(with dishwasher: Dishwasher){
         
         titleLabel.text = dishwasher.title
-        priceLabel.text = "00.00"
+        priceLabel.text = dishwasher.price["now"]
         
-        if imageView.image == nil{
-        
-            if let url = URL(string: "https:\(dishwasher.image)") {
-                downloadImage(url: url, imageViewCell: imageView)
-            }
+    
+        if let url = dishwasher.imageURL {
+            downloadImage(url: url, imageViewCell: imageView)
         }
         
     }
     
     func getDataFromUrl(url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
-        URLSession.shared.dataTask(with: url) { data, response, error in
+        dataTask?.cancel()
+        dataTask = URLSession.shared.dataTask(with: url) { data, response, error in
             if let e = error {
                 print(e.localizedDescription)
             }
             completion(data, response, error)
-            }.resume()
+            }
+        dataTask?.resume()
     }
     
     func downloadImage(url: URL, imageViewCell: UIImageView) {

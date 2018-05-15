@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+import UIKit
 
 struct ApiResponse: Decodable {
     
@@ -20,4 +20,8 @@ struct Dishwasher: Decodable {
     let price: [String: String]
     let image: String
     
+    var imageURL : URL?{
+        let fullUrl: String = "https:" + image
+        return URL(string: fullUrl)
+    }
 }
